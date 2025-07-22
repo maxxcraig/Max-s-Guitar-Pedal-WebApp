@@ -1,0 +1,67 @@
+name: Build Guitar Pedal App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+    
+    - name: Build
+      run: cmake --build build --config Release
+    
+    - name: Package Windows Build
+      run: |
+        mkdir GuitarPedalApp-Windows
+        cp -r build/GuitarPedalApp_artefacts/* GuitarPedalApp-Windows/
+      shell: bash
+    
+    - name: Upload Windows Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GuitarPedalApp-Windows
+        path: GuitarPedalApp-Windows/
+
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64
+    
+    - name: Build
+      run: cmake --build build --config Release
+    
+    - name: Package macOS Build
+      run: |
+        mkdir GuitarPedalApp-macOS
+        cp -r build/GuitarPedalApp_artefacts/* GuitarPedalApp-macOS/
+        # List contents to debug
+        ls -la GuitarPedalApp-macOS/
+        # Ensure executable permissions are set if the app exists
+        if [ -f "GuitarPedalApp-macOS/GuitarPedalApp.app/Contents/MacOS/GuitarPedalApp" ]; then
+          chmod +x GuitarPedalApp-macOS/GuitarPedalApp.app/Contents/MacOS/GuitarPedalApp
+          xattr -cr GuitarPedalApp-macOS/GuitarPedalApp.app
+        fi
+    
+    - name: Upload macOS Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GuitarPedalApp-macOS
+        path: GuitarPedalApp-macOS/

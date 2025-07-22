@@ -1,0 +1,15 @@
+/build/
+/external/JUCE/Builds/
+.vscode/
+.DS_Store
+.env
+*.xcodeproj
+xcuserdata/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*.ninja
+.env.example
+CLAUDE.md
+.claude/.session
+**/google-services.json
