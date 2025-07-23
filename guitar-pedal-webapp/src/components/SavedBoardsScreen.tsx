@@ -154,9 +154,10 @@ export default function SavedBoardsScreen({ onBackToHome, onLoadBoard }: SavedBo
                             </button>
                             <button
                               onClick={() => deleteCloudBoard(board.id)}
-                              className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-colors"
+                              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-lg font-bold transition-colors"
+                              title="Delete board"
                             >
-                              Delete
+                              ✕
                             </button>
                           </div>
                         </div>
@@ -197,9 +198,10 @@ export default function SavedBoardsScreen({ onBackToHome, onLoadBoard }: SavedBo
                           </button>
                           <button
                             onClick={() => deleteLocalBoard(index)}
-                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-colors"
+                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-lg font-bold transition-colors"
+                            title="Delete board"
                           >
-                            Delete
+                            ✕
                           </button>
                         </div>
                       </div>

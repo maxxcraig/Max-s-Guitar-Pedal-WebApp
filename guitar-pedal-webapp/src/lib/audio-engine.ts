@@ -25,11 +25,26 @@ export class AudioEngine {
       // Create audio context
       this.audioContext = new AudioContext();
       
-      // Load audio worklet
-      await this.audioContext.audioWorklet.addModule('/audio-worklet.js');
+      // Load audio worklet with error handling
+      try {
+        await this.audioContext.audioWorklet.addModule('/audio-worklet.js');
+        console.log('Audio worklet module loaded successfully');
+      } catch (workletError) {
+        console.error('Failed to load audio worklet module:', workletError);
+        throw new Error(`Audio worklet module failed to load: ${workletError.message}`);
+      }
       
-      // Create worklet node
-      this.workletNode = new AudioWorkletNode(this.audioContext, 'effects-processor');
+      // Small delay to ensure worklet is fully registered
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Create worklet node with error handling
+      try {
+        this.workletNode = new AudioWorkletNode(this.audioContext, 'effects-processor');
+        console.log('AudioWorkletNode created successfully');
+      } catch (nodeError) {
+        console.error('Failed to create AudioWorkletNode:', nodeError);
+        throw new Error(`AudioWorkletNode creation failed: ${nodeError.message}`);
+      }
       
       // Create gain node for output volume
       this.gainNode = this.audioContext.createGain();

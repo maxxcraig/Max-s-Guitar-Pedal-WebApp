@@ -64,7 +64,8 @@ export default function HomeScreen({
           Create amazing guitar sounds with virtual pedals in your browser
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Top 3 buttons */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <button
             onClick={onNavigateToPedalBoard}
             className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-6 rounded-lg transition-all transform hover:scale-105 shadow-lg"
@@ -88,19 +89,30 @@ export default function HomeScreen({
             <div className="text-2xl font-bold mb-2">ℹ️ About</div>
             <div className="text-sm opacity-90">Learn about the app</div>
           </button>
+        </div>
 
+        {/* Bottom 2 buttons - centered */}
+        <div className="flex justify-center gap-6">
           <button
-            className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white p-6 rounded-lg transition-all transform hover:scale-105 shadow-lg"
-            onClick={() => window.open('https://github.com/maxcraig/guitar-pedal-app', '_blank')}
+            className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white p-6 rounded-lg transition-all transform hover:scale-105 shadow-lg w-64"
+            onClick={() => window.open('https://github.com/maxxcraig/Max-s-Guitar-Pedal-WebApp', '_blank')}
           >
             <div className="text-2xl font-bold mb-2">⭐ GitHub</div>
             <div className="text-sm opacity-90">View source code</div>
+          </button>
+
+          <button
+            className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white p-6 rounded-lg transition-all transform hover:scale-105 shadow-lg w-64"
+            onClick={() => window.open('https://maxcraig.itch.io/maxs-guitar-pedal-app', '_blank')}
+          >
+            <div className="text-2xl font-bold mb-2">💻 Original App Download</div>
+            <div className="text-sm opacity-90">(your OS may block you opening)</div>
           </button>
         </div>
 
         <div className="mt-12 text-center">
           <p className="text-gray-400 text-sm mb-4">
-            Real-time audio processing powered by Web Audio API
+            Real-time audio processing powered by custom DSP algorithms
           </p>
           <div className="flex justify-center space-x-8 text-xs text-gray-500">
             <span>🎚️ Professional Effects</span>

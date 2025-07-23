@@ -97,7 +97,7 @@ export default function PedalComponent({
           <>
             <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.gain || 2.0}
+                value={parameters.gain !== undefined ? parameters.gain : 4.05}
                 min={0.1}
                 max={8.0}
                 step={0.1}
@@ -108,7 +108,7 @@ export default function PedalComponent({
             </div>
             <div className="absolute knob-component" style={{ left: 211, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.level || 1.0}
+                value={parameters.level !== undefined ? parameters.level : 1.0}
                 min={0.0}
                 max={2.0}
                 step={0.01}
@@ -119,7 +119,7 @@ export default function PedalComponent({
             </div>
             <div className="absolute knob-component" style={{ left: 180, top: 42, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.tone || 5.0}
+                value={parameters.tone !== undefined ? parameters.tone : 5.0}
                 min={0.0}
                 max={10.0}
                 step={0.1}
@@ -136,7 +136,7 @@ export default function PedalComponent({
           <>
             <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.mix || 0.3}
+                value={parameters.mix !== undefined ? parameters.mix : 0.5}
                 min={0.0}
                 max={1.0}
                 step={0.01}
@@ -147,7 +147,7 @@ export default function PedalComponent({
             </div>
             <div className="absolute knob-component" style={{ left: 211, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.decay || 0.6}
+                value={parameters.decay !== undefined ? parameters.decay : 0.475}
                 min={0.1}
                 max={0.85}
                 step={0.01}
@@ -158,7 +158,7 @@ export default function PedalComponent({
             </div>
             <div className="absolute knob-component" style={{ left: 180, top: 42, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.tone || 0.5}
+                value={parameters.tone !== undefined ? parameters.tone : 0.5}
                 min={0.0}
                 max={1.0}
                 step={0.01}
@@ -176,7 +176,7 @@ export default function PedalComponent({
           <>
             <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.gain || 2.0}
+                value={parameters.gain !== undefined ? parameters.gain : 4.05}
                 min={0.1}
                 max={8.0}
                 step={0.1}
@@ -187,7 +187,7 @@ export default function PedalComponent({
             </div>
             <div className="absolute knob-component" style={{ left: 211, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.level || 1.0}
+                value={parameters.level !== undefined ? parameters.level : 1.0}
                 min={0.0}
                 max={2.0}
                 step={0.01}
@@ -198,7 +198,7 @@ export default function PedalComponent({
             </div>
             <div className="absolute knob-component" style={{ left: 180, top: 42, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.tone || 5.0}
+                value={parameters.tone !== undefined ? parameters.tone : 5.0}
                 min={0.0}
                 max={10.0}
                 step={0.1}
