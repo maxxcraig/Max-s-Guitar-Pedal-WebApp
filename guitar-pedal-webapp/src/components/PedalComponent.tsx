@@ -89,17 +89,19 @@ export default function PedalComponent({
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
-  // Render knobs based on pedal type - all use overdrive layout
+  // Render knobs based on pedal type
   const renderKnobs = () => {
     switch (type) {
       case 'overdrive':
+      case 'distortion':
+      case 'bluesdriver':
         return (
           <>
             <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
               <Knob
                 value={parameters.gain !== undefined ? parameters.gain : 4.05}
                 min={0.1}
-                max={8.0}
+                max={type === 'distortion' ? 10.0 : type === 'bluesdriver' ? 6.0 : 8.0}
                 step={0.1}
                 size={45}
                 onChange={(value) => onParameterChange('gain', value)}
@@ -169,41 +171,137 @@ export default function PedalComponent({
             </div>
           </>
         );
-      
-      default:
-        // All other pedals use overdrive layout with generic parameters
+
+      case 'chorus':
+      case 'phaser':
         return (
           <>
             <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.gain !== undefined ? parameters.gain : 4.05}
+                value={parameters.rate !== undefined ? parameters.rate : 0.5}
                 min={0.1}
-                max={8.0}
+                max={5.0}
                 step={0.1}
                 size={45}
-                onChange={(value) => onParameterChange('gain', value)}
+                onChange={(value) => onParameterChange('rate', value)}
                 disabled={!enabled}
               />
             </div>
             <div className="absolute knob-component" style={{ left: 211, top: 11, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.level !== undefined ? parameters.level : 1.0}
+                value={parameters.depth !== undefined ? parameters.depth : 0.3}
                 min={0.0}
-                max={2.0}
+                max={1.0}
                 step={0.01}
                 size={45}
-                onChange={(value) => onParameterChange('level', value)}
+                onChange={(value) => onParameterChange('depth', value)}
                 disabled={!enabled}
               />
             </div>
             <div className="absolute knob-component" style={{ left: 180, top: 42, pointerEvents: 'auto' }}>
               <Knob
-                value={parameters.tone !== undefined ? parameters.tone : 5.0}
+                value={parameters.feedback !== undefined ? parameters.feedback : 0.2}
                 min={0.0}
-                max={10.0}
-                step={0.1}
+                max={type === 'phaser' ? 0.95 : 0.7}
+                step={0.01}
                 size={37}
-                onChange={(value) => onParameterChange('tone', value)}
+                onChange={(value) => onParameterChange('feedback', value)}
+                disabled={!enabled}
+              />
+            </div>
+          </>
+        );
+
+      case 'delay':
+        return (
+          <>
+            <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
+              <Knob
+                value={parameters.time !== undefined ? parameters.time : 0.3}
+                min={0.01}
+                max={2.0}
+                step={0.01}
+                size={45}
+                onChange={(value) => onParameterChange('time', value)}
+                disabled={!enabled}
+              />
+            </div>
+            <div className="absolute knob-component" style={{ left: 211, top: 11, pointerEvents: 'auto' }}>
+              <Knob
+                value={parameters.feedback !== undefined ? parameters.feedback : 0.4}
+                min={0.0}
+                max={0.95}
+                step={0.01}
+                size={45}
+                onChange={(value) => onParameterChange('feedback', value)}
+                disabled={!enabled}
+              />
+            </div>
+            <div className="absolute knob-component" style={{ left: 180, top: 42, pointerEvents: 'auto' }}>
+              <Knob
+                value={parameters.mix !== undefined ? parameters.mix : 0.3}
+                min={0.0}
+                max={1.0}
+                step={0.01}
+                size={37}
+                onChange={(value) => onParameterChange('mix', value)}
+                disabled={!enabled}
+              />
+            </div>
+          </>
+        );
+
+      case 'tremolo':
+        return (
+          <>
+            <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
+              <Knob
+                value={parameters.rate !== undefined ? parameters.rate : 4.0}
+                min={0.1}
+                max={20.0}
+                step={0.1}
+                size={45}
+                onChange={(value) => onParameterChange('rate', value)}
+                disabled={!enabled}
+              />
+            </div>
+            <div className="absolute knob-component" style={{ left: 211, top: 11, pointerEvents: 'auto' }}>
+              <Knob
+                value={parameters.depth !== undefined ? parameters.depth : 0.5}
+                min={0.0}
+                max={1.0}
+                step={0.01}
+                size={45}
+                onChange={(value) => onParameterChange('depth', value)}
+                disabled={!enabled}
+              />
+            </div>
+            <div className="absolute knob-component" style={{ left: 180, top: 42, pointerEvents: 'auto' }}>
+              <Knob
+                value={parameters.level !== undefined ? parameters.level : 1.0}
+                min={0.0}
+                max={2.0}
+                step={0.01}
+                size={37}
+                onChange={(value) => onParameterChange('level', value)}
+                disabled={!enabled}
+              />
+            </div>
+          </>
+        );
+      
+      default:
+        // Fallback for unknown pedal types
+        return (
+          <>
+            <div className="absolute knob-component" style={{ left: 140, top: 11, pointerEvents: 'auto' }}>
+              <Knob
+                value={parameters.level !== undefined ? parameters.level : 0.5}
+                min={0.0}
+                max={1.0}
+                step={0.01}
+                size={45}
+                onChange={(value) => onParameterChange('level', value)}
                 disabled={!enabled}
               />
             </div>

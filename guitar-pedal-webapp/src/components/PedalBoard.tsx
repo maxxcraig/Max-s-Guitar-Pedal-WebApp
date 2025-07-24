@@ -167,17 +167,21 @@ export default function PedalBoard({ onBackToHome, boardToLoad, onBoardLoaded }:
   const getDefaultParameters = (type: string): PedalParameters => {
     switch (type) {
       case 'overdrive':
-        return { gain: 4.05, level: 1.0, tone: 5.0, mix: 0.8 }; // Mid-range values for straight up position
+        return { gain: 4.0, level: 1.0, tone: 5.0 };
       case 'reverb':
-        return { mix: 0.5, decay: 0.475, tone: 0.5 }; // Mid-range values
+        return { mix: 0.5, decay: 0.475, tone: 0.5 };
       case 'distortion':
-        return { gain: 3.0, level: 1.0, tone: 5.0 };
+        return { gain: 5.0, level: 1.0, tone: 5.0 };
       case 'chorus':
-        return { rate: 0.5, depth: 0.3, feedback: 0.2 };
+        return { rate: 2.5, depth: 0.5, feedback: 0.35, mix: 0.5 };
       case 'delay':
-        return { time: 0.3, feedback: 0.4, mix: 0.3 };
+        return { time: 1.0, feedback: 0.475, mix: 0.5 };
       case 'tremolo':
-        return { rate: 4.0, depth: 0.5 };
+        return { rate: 10.0, depth: 0.5, level: 1.0 };
+      case 'phaser':
+        return { rate: 2.5, depth: 0.5, feedback: 0.475, mix: 0.5 };
+      case 'bluesdriver':
+        return { gain: 3.0, level: 1.0, tone: 5.0 };
       default:
         return { level: 0.5 };
     }
