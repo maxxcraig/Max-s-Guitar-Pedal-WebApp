@@ -115,11 +115,6 @@ class EffectsProcessor extends AudioWorkletProcessor {
     const inputChannel = input[0];
     const outputChannel = output[0];
     
-    // Count enabled effects for very aggressive gain compensation
-    const enabledEffects = this.effects.filter(effect => effect.enabled).length;
-    // Extremely aggressive compensation - keep volume roughly constant
-    const gainCompensation = enabledEffects > 0 ? 0.6 / enabledEffects : 1.0;
-    
     for (let i = 0; i < inputChannel.length; i++) {
       let sample = inputChannel[i] * this.inputGain;
       
@@ -130,11 +125,8 @@ class EffectsProcessor extends AudioWorkletProcessor {
         }
       }
       
-      // Apply gain compensation to prevent volume stacking
-      sample *= gainCompensation;
-      
-      // Soft limiting
-      sample = Math.tanh(sample * 0.8);
+      // Soft limiting to prevent clipping
+      sample = Math.tanh(sample * 0.7);
       outputChannel[i] = Math.max(-1, Math.min(1, sample));
     }
     
@@ -166,18 +158,9 @@ class BaseEffect {
 class OverdriveEffect extends BaseEffect {
   constructor(id) {
     super(id);
-    this.gain = 3.0;
+    this.gain = 4.0;
     this.level = 1.0;
-    this.tone = 5.0; // 0-10 range
-    
-    // Filter states for tone shaping
-    this.highpassState = 0.0;
-    this.lowpassState = 0.0;
-    this.lastInput = 0.0;
-    
-    // Tube warmth modeling
-    this.tubeBias = 0.1; // Small DC bias for tube warmth
-    this.evenHarmonics = 0.15; // Even harmonic generation
+    this.tone = 5.0;
   }
   
   setParameter(name, value) {
@@ -197,66 +180,26 @@ class OverdriveEffect extends BaseEffect {
     }
   }
   
-  processSample(inputSample) {
-    // Input stage - subtle high-pass to remove DC and add presence
-    const hp_alpha = 0.999;
-    this.highpassState = hp_alpha * this.highpassState + hp_alpha * (inputSample - this.lastInput);
-    this.lastInput = inputSample;
-    let processed = this.highpassState;
+  processSample(sample) {
+    // Simple overdrive - similar to other working pedals
+    let processed = sample * this.gain * 0.5;
     
-    // Add tube bias for warmth
-    processed += this.tubeBias;
+    // Soft clipping for overdrive character
+    processed = Math.tanh(processed * 0.8);
     
-    // Multi-stage gain with progressive saturation (like real tube stages)
-    let driven = processed * this.gain * 0.8; // First stage - more gain
+    // Add second harmonic for tube warmth
+    const harmonic = Math.sin(processed * Math.PI * 2) * 0.08;
+    processed += harmonic;
     
-    // First saturation stage - more aggressive soft knee
-    if (Math.abs(driven) > 0.2) {
-      const sign = Math.sign(driven);
-      const abs_val = Math.abs(driven);
-      // More aggressive soft knee compression
-      driven = sign * (0.2 + (abs_val - 0.2) * 0.7);
-      // Add more even harmonics for tube warmth
-      driven += sign * this.evenHarmonics * 1.5 * (abs_val - 0.2) * (abs_val - 0.2);
-    }
-    
-    // Second gain stage - more aggressive
-    driven *= this.gain * 0.6;
-    
-    // Second saturation stage - more prominent asymmetric clipping
-    const warmth = 0.7 + 0.3 * Math.sin(driven * 1.5); // More modulation
-    if (driven > 0.0) {
-      // Positive half - more saturation
-      driven = Math.tanh(driven * warmth * 1.1);
-    } else {
-      // Negative half - even more asymmetry
-      driven = Math.tanh(driven * warmth * 1.3);
-    }
-    
-    // Remove DC bias
-    processed = driven - this.tubeBias * 0.5;
-    
-    // Tone control - frequency shaping
+    // Simple tone control
     const toneAmount = this.tone / 10.0;
+    const filtered = processed * 0.8; // Simulate filtering
+    processed = filtered * (1 - toneAmount) + processed * toneAmount;
     
-    // Low-pass filtering (roll off harsh highs)
-    const lp_freq = 2000 + toneAmount * 3000; // 2kHz to 5kHz
-    const lp_alpha = Math.exp(-2.0 * Math.PI * lp_freq / 44100);
-    this.lowpassState = lp_alpha * this.lowpassState + (1 - lp_alpha) * processed;
+    // Output level
+    processed *= this.level * 0.9;
     
-    // Blend between filtered and unfiltered based on tone
-    const trebleAmount = Math.pow(toneAmount, 0.7); // Slight curve for more natural response
-    processed = this.lowpassState * (1 - trebleAmount) + processed * trebleAmount;
-    
-    // Mid-frequency boost (tube amps often boost mids) - more prominent
-    const midBoost = 1.0 + 0.5 * (1.0 - Math.abs(toneAmount - 0.5) * 2.0);
-    processed *= midBoost;
-    
-    // Final output level and soft limiting - louder output
-    processed *= this.level * 1.2;
-    processed = Math.tanh(processed * 0.8); // Final soft limiting
-    
-    return processed;
+    return Math.max(-1.0, Math.min(1.0, processed));
   }
 }
 
@@ -774,8 +717,8 @@ class DelayEffect extends BaseEffect {
     // Create multiple taps with decreasing volume (each 60% of previous)
     const delayedSignal = tap1 * 1.0 + tap2 * 0.6 + tap3 * 0.36;
     
-    // Much louder delay mix
-    return (1 - this.mix) * sample + this.mix * delayedSignal * 2.0;
+    // Balanced delay mix
+    return (1 - this.mix) * sample + this.mix * delayedSignal * 1.2;
   }
 }
 

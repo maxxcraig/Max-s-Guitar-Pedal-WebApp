@@ -175,7 +175,7 @@ export default function PedalBoard({ onBackToHome, boardToLoad, onBoardLoaded }:
       case 'chorus':
         return { rate: 2.5, depth: 0.5, feedback: 0.35, mix: 0.5 };
       case 'delay':
-        return { time: 1.0, feedback: 0.475, mix: 0.5 };
+        return { time: 0.32, feedback: 0.4, mix: 0.5 };
       case 'tremolo':
         return { rate: 10.0, depth: 0.5, level: 1.0 };
       case 'phaser':
