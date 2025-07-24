@@ -30,9 +30,9 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         {/* App description */}
         <div className="text-left space-y-6 mb-12">
           <div className="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
-            <h2 className="text-2xl font-bold text-white mb-4">My Guitar</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">The App</h2>
             <p className="text-gray-300 leading-relaxed">
-              Max's guitar pedal board is a real-time audio processing application that brings the experience 
+              My guitar pedal board is a real-time audio processing application that brings the experience 
               of classic guitar pedals to your browser. Built with modern web technologies, it features 
               professional-grade DSP algorithms for authentic sound processing.
             </p>

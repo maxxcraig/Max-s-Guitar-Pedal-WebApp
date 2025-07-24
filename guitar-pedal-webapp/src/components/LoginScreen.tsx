@@ -43,7 +43,7 @@ export default function LoginScreen({ onSwitchToSignup, onLoginSuccess }: LoginS
     >
       <div className="bg-black bg-opacity-80 p-8 rounded-lg shadow-lg w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Guitar Pedal App</h1>
+          <h1 className="text-3xl font-bold text-white mb-2"> Max's Guitar Pedal App</h1>
           <p className="text-gray-300">Sign in to access your pedal boards</p>
         </div>
 

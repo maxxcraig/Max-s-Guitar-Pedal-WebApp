@@ -75,7 +75,7 @@ export default function SignupScreen({ onSwitchToLogin, onSignupSuccess }: Signu
       <div className="bg-black bg-opacity-80 p-8 rounded-lg shadow-lg w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
-          <p className="text-gray-300">Join to save and share your pedal boards</p>
+          <p className="text-gray-300">Join to save your pedal boards</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
